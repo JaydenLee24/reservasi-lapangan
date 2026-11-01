@@ -5,5 +5,5 @@ export interface Booking {
   date: string;
   startTime: string;
   endTime: string;
-  status: 'confirmed' | 'cancelled';
+  status: 'BOOKED' | 'CANCELLED' | 'COMPLETED';
 }

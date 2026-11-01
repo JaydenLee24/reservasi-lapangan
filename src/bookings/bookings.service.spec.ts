@@ -37,7 +37,7 @@ describe('BookingsService', () => {
       date: '2026-11-05',
       startTime: '09:00',
       endTime: '10:00',
-      status: 'confirmed',
+      status: 'BOOKED',
     });
   });
 
@@ -78,7 +78,7 @@ describe('BookingsService', () => {
       endTime: '11:00',
     });
 
-    expect(booking.status).toBe('confirmed');
+    expect(booking.status).toBe('BOOKED');
   });
 
   it('should allow the same time on a different field', () => {
@@ -101,7 +101,7 @@ describe('BookingsService', () => {
     expect(booking.fieldId).toBe(2);
   });
 
-  it('should make a cancelled booking stop blocking its time slot', () => {
+  it('should make a CANCELLED booking stop blocking its time slot', () => {
     const booking = service.create({
       userId: 1,
       fieldId: 1,
@@ -120,7 +120,7 @@ describe('BookingsService', () => {
       endTime: '10:00',
     });
 
-    expect(replacement.status).toBe('confirmed');
+    expect(replacement.status).toBe('BOOKED');
   });
 
   it('should reject an invalid time range', () => {
@@ -183,7 +183,7 @@ describe('BookingsService', () => {
     ).toThrow(NotFoundException);
   });
 
-  it('should exclude cancelled bookings from availability', () => {
+  it('should exclude CANCELLED bookings from availability', () => {
     const booking = service.create({
       userId: 1,
       fieldId: 1,

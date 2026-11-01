@@ -53,7 +53,7 @@ export class BookingsService {
       (booking) =>
         booking.fieldId === fieldId &&
         booking.date === date &&
-        booking.status === 'confirmed' &&
+        booking.status === 'BOOKED' &&
         startTime < booking.endTime &&
         endTime > booking.startTime,
     );
@@ -71,7 +71,7 @@ export class BookingsService {
       date,
       startTime,
       endTime,
-      status: 'confirmed',
+      status: 'BOOKED',
     };
 
     this.bookings.push(booking);
@@ -95,11 +95,11 @@ export class BookingsService {
   cancel(id: number) {
     const booking = this.findOne(id);
 
-    if (booking.status === 'cancelled') {
+    if (booking.status === 'CANCELLED') {
       throw new BadRequestException('Booking sudah dibatalkan');
     }
 
-    booking.status = 'cancelled';
+    booking.status = 'CANCELLED';
     return booking;
   }
 
@@ -115,7 +115,7 @@ export class BookingsService {
         (booking) =>
           booking.fieldId === fieldId &&
           booking.date === date &&
-          booking.status === 'confirmed',
+          booking.status === 'BOOKED',
       )
       .map((booking) => ({
         startTime: booking.startTime,
