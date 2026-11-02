@@ -24,6 +24,7 @@ describe('BookingsService', () => {
   it('should create a valid booking', () => {
     const booking = service.create({
       userId: 1,
+      customerName: 'Budi',
       fieldId: 1,
       date: '2026-11-05',
       startTime: '09:00',
@@ -33,6 +34,7 @@ describe('BookingsService', () => {
     expect(booking).toMatchObject({
       id: 1,
       userId: 1,
+      customerName: 'Budi',
       fieldId: 1,
       date: '2026-11-05',
       startTime: '09:00',
@@ -41,9 +43,24 @@ describe('BookingsService', () => {
     });
   });
 
+  it('should reject an empty customer name', () => {
+    expect(() =>
+      service.create({
+        userId: 1,
+        customerName: '   ',
+        fieldId: 1,
+        date: '2026-11-05',
+        startTime: '09:00',
+        endTime: '10:00',
+      }),
+    ).toThrow(BadRequestException);
+  });
+
+
   it('should reject overlapping bookings on the same field', () => {
     service.create({
       userId: 1,
+      customerName: 'Budi',
       fieldId: 1,
       date: '2026-11-05',
       startTime: '09:00',
@@ -53,6 +70,7 @@ describe('BookingsService', () => {
     expect(() =>
       service.create({
         userId: 2,
+        customerName: 'Budi',
         fieldId: 1,
         date: '2026-11-05',
         startTime: '09:30',
@@ -64,6 +82,7 @@ describe('BookingsService', () => {
   it('should allow bookings at adjacent times', () => {
     service.create({
       userId: 1,
+      customerName: 'Budi',
       fieldId: 1,
       date: '2026-11-05',
       startTime: '09:00',
@@ -72,6 +91,7 @@ describe('BookingsService', () => {
 
     const booking = service.create({
       userId: 2,
+      customerName: 'Budi',
       fieldId: 1,
       date: '2026-11-05',
       startTime: '10:00',
@@ -84,6 +104,7 @@ describe('BookingsService', () => {
   it('should allow the same time on a different field', () => {
     service.create({
       userId: 1,
+      customerName: 'Budi',
       fieldId: 1,
       date: '2026-11-05',
       startTime: '09:00',
@@ -92,6 +113,7 @@ describe('BookingsService', () => {
 
     const booking = service.create({
       userId: 2,
+      customerName: 'Budi',
       fieldId: 2,
       date: '2026-11-05',
       startTime: '09:00',
@@ -104,6 +126,7 @@ describe('BookingsService', () => {
   it('should make a CANCELLED booking stop blocking its time slot', () => {
     const booking = service.create({
       userId: 1,
+      customerName: 'Budi',
       fieldId: 1,
       date: '2026-11-05',
       startTime: '09:00',
@@ -114,6 +137,7 @@ describe('BookingsService', () => {
 
     const replacement = service.create({
       userId: 2,
+      customerName: 'Budi',
       fieldId: 1,
       date: '2026-11-05',
       startTime: '09:00',
@@ -127,6 +151,7 @@ describe('BookingsService', () => {
     expect(() =>
       service.create({
         userId: 1,
+        customerName: 'Budi',
         fieldId: 1,
         date: '2026-11-05',
         startTime: '10:00',
@@ -139,6 +164,7 @@ describe('BookingsService', () => {
     expect(() =>
       service.create({
         userId: 0,
+        customerName: 'Budi',
         fieldId: 1,
         date: '2026-11-05',
         startTime: '09:00',
@@ -151,6 +177,7 @@ describe('BookingsService', () => {
     expect(() =>
       service.create({
         userId: 1,
+        customerName: 'Budi',
         fieldId: 1,
         date: '05-11-2026',
         startTime: '09:00',
@@ -163,6 +190,7 @@ describe('BookingsService', () => {
     expect(() =>
       service.create({
         userId: 1,
+        customerName: 'Budi',
         fieldId: 1,
         date: '2026-11-05',
         startTime: '9:00',
@@ -175,6 +203,7 @@ describe('BookingsService', () => {
     expect(() =>
       service.create({
         userId: 1,
+        customerName: 'Budi',
         fieldId: 999,
         date: '2026-11-05',
         startTime: '09:00',
@@ -186,6 +215,7 @@ describe('BookingsService', () => {
   it('should exclude CANCELLED bookings from availability', () => {
     const booking = service.create({
       userId: 1,
+      customerName: 'Budi',
       fieldId: 1,
       date: '2026-11-05',
       startTime: '09:00',
@@ -200,6 +230,7 @@ describe('BookingsService', () => {
   it('should return only bookings belonging to the requested user', () => {
     service.create({
       userId: 1,
+      customerName: 'Budi',
       fieldId: 1,
       date: '2026-11-05',
       startTime: '09:00',
@@ -208,6 +239,7 @@ describe('BookingsService', () => {
 
     service.create({
       userId: 2,
+      customerName: 'Budi',
       fieldId: 2,
       date: '2026-11-05',
       startTime: '09:00',

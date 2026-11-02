@@ -14,14 +14,18 @@ export class BookingsService {
   constructor(private readonly fieldsService: FieldsService) {}
 
   create(data: {
-    userId: number;
-    fieldId: number;
-    date: string;
-    startTime: string;
-    endTime: string;
-  }) {
-    const { userId, fieldId, date, startTime, endTime } = data;
+  userId: number;
+  customerName: string;
+  fieldId: number;
+  date: string;
+  startTime: string;
+  endTime: string;
+}) {
+    const { userId, customerName, fieldId, date, startTime, endTime } = data;
 
+    if (typeof customerName !== 'string' || !customerName.trim()) {
+  throw new BadRequestException('customerName wajib diisi');
+}
     if (
       !Number.isInteger(userId) ||
       userId <= 0 ||
@@ -67,6 +71,7 @@ export class BookingsService {
     const booking: Booking = {
       id: this.nextId++,
       userId,
+      customerName: customerName.trim(),
       fieldId,
       date,
       startTime,

@@ -21,10 +21,11 @@ export class BookingsController {
   ) {
     return this.bookingsService.getAvailability(id, date);
   }
-
+  
   @Post('bookings')
   create(@Body() body: {
     userId: number;
+    customerName: string;
     fieldId: number;
     date: string;
     startTime: string;
